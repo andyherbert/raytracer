@@ -1,0 +1,15 @@
+[package]
+name = "raytracer"
+version = "0.1.0"
+authors = ["Andy Herbert <andy.herbert@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+image = "0.23.*"
+
+[[bin]]
+name = "ray"
+path = "src/bin/ray.rs"
+
+[profile.release]
+opt-level = 3
