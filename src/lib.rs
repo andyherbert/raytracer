@@ -17,23 +17,25 @@ pub fn render(world: &World, path: &str, number_of_threads: usize) -> Result<(),
     Ok(())
 }
 
-pub fn spinning_plane() {
+pub fn spinning_gitaroo() {
     let mut rads = 0.0;
     for i in 0..192 {
         let mut world = World::new();
         world.camera.fov = PI / 2.8;
         world.camera.set_dimensions(512, 512);
-        world.camera.from = Vert::new(0.0, 0.0, -8.0);
+        world.camera.from = Vert::new(0.0, 0.0, -40.0);
         world.camera.to = Vert::new(0.0, 0.0, 0.0);
         let mut light = Light::new();
-        light.position = Vert::new(-5.0, 8.0, -8.0);
-        let mut mesh = Mesh::load_obj("objs/plane.obj").unwrap();
+        light.position = Vert::new(-40.0, 40.0, -80.0);
+        let mut mesh = Mesh::load_obj("objs/gitaroo/u1.obj").expect("object");
+        mesh.rotation.x = -PI / 2.0;
+        mesh.position.y = -80.0;
         mesh.rotation.y = PI / 2.0 + rads;
-        mesh.scale = Vert::new(2.0, 2.0, 2.0);
+        mesh.scale = Vert::new(0.2, 0.2, 0.2);
         world.add_light(light);
         world.add_mesh(mesh);
         let path = format!("imgs/spinning_plane_{:04}.png", i);
-        render(&world, &path, 16).unwrap();
+        render(&world, &path, 16).expect("render");
         rads += PI * 2.0 / 192.0;
     }
 }

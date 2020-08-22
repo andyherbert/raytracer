@@ -1,4 +1,4 @@
-use crate::{ComputedTriangle, Material, Matrix, Vert};
+use crate::{ComputedTriangle, Material, UVMap, Matrix, Vert};
 
 #[derive(Clone)]
 pub struct Triangle {
@@ -7,11 +7,19 @@ pub struct Triangle {
     pub p3: Vert,
     pub normals: Option<(Vert, Vert, Vert)>,
     pub material: Material,
+    pub uv_map: Option<UVMap>,
 }
 
 impl Triangle {
     pub fn compute(&self) -> ComputedTriangle {
-        ComputedTriangle::new(self.p1.clone(), self.p2.clone(), self.p3.clone(), self.normals.clone())
+        ComputedTriangle::new(
+            self.p1.clone(),
+            self.p2.clone(),
+            self.p3.clone(),
+            self.normals.clone(),
+            self.material.clone(),
+            self.uv_map.clone(),
+        )
     }
 
     pub fn transform(&mut self, transform: &Matrix) {

@@ -23,8 +23,8 @@ impl Light {
         let ambient = effective_colour.multiply_by_scalar(compute.triangle.material.ambient);
         let light_dot_normal = light_v.dot_product(&compute.norm_v);
         let (diffuse, specular) = if shadowed || light_dot_normal < 0.0 {
-            let diffuse = Vert::black();
-            let specular = Vert::black();
+            let diffuse = Vert::default();
+            let specular = Vert::default();
             (diffuse, specular)
         } else {
             let diffuse = effective_colour.multiply_by_scalar(compute.triangle.material.diffuse).multiply_by_scalar(light_dot_normal);
@@ -32,7 +32,7 @@ impl Light {
             let reflect_v = light_v.clone() - compute.norm_v.multiply_by_scalar(2.0).multiply_by_scalar(light_v.dot_product(&compute.norm_v));
             let reflect_dot_eye = reflect_v.dot_product(&compute.eye_v);
             if reflect_dot_eye <= 0.0 {
-                (diffuse, Vert::black())
+                (diffuse, Vert::default())
             } else {
                 let factor = reflect_dot_eye.powf(compute.triangle.material.shininess);
                 let specular = self.intensity.multiply_by_scalar(compute.triangle.material.specular * factor);

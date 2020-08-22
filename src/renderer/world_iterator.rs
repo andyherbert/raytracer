@@ -1,4 +1,5 @@
-use crate::{col_at_ray, CameraIterator, ComputedMesh, Light, Vert};
+use crate::{CameraIterator, ComputedMesh, Light, Vert};
+use super::colour_at_ray;
 use std::sync::Arc;
 
 pub struct WorldIterator {
@@ -11,11 +12,12 @@ impl Iterator for WorldIterator {
     type Item = Vert;
 
     fn next(&mut self) -> Option<Vert> {
-        if let Some(ray) = self.camera_iter.next() {
-            let col = col_at_ray(&ray, &self.lights, &self.computed_meshes);
-            Some(col)
-        } else {
-            None
+        match self.camera_iter.next() {
+            Some(ray) => {
+                let col = colour_at_ray(&ray, &self.lights, &self.computed_meshes);
+                Some(col)
+            },
+            None => None,
         }
     }
 }

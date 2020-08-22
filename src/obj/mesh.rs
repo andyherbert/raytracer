@@ -1,26 +1,24 @@
 use crate::{
-    ComputeTriangles, ComputedMesh, Matrix, TransformNormals, TransformTriangles, Triangle, Vert,
-    WavefrontObj,
+    ComputeTriangles, ComputedMesh, Map, Matrix, TransformNormals, TransformTriangles, Triangle,
+    Vert,
 };
+use super::WavefrontObj;
+use std::sync::Arc;
+use std::collections::HashMap;
 
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Mesh {
-    triangles: Vec<Triangle>,
+    pub triangles: Vec<Triangle>,
     pub position: Vert,
     pub scale: Vert,
     pub rotation: Vert,
+    pub maps: HashMap<String, Arc<Map>>,
 }
 
 impl Mesh {
     pub fn load_obj(path: &str) -> Result<Mesh, Box<dyn std::error::Error>> {
-        let obj = WavefrontObj::new(path)?;
-        let mesh = Mesh {
-            triangles: obj.triangles,
-            position: Vert::new(0.0, 0.0, 0.0),
-            scale: Vert::new(1.0, 1.0, 1.0),
-            rotation: Vert::new(0.0, 0.0, 0.0),
-        };
-        Ok(mesh)
+        let obj = Mesh::from(WavefrontObj::open(path)?);
+        Ok(obj)
     }
 
     pub fn compute(&self) -> ComputedMesh {

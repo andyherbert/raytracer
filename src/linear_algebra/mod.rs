@@ -1,4 +1,4 @@
 mod matrix;
 mod vert;
-pub use matrix::*;
-pub use vert::*;
+pub use matrix::Matrix;
+pub use vert::Vert;

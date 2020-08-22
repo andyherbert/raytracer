@@ -14,7 +14,7 @@ pub struct World {
     pub meshes: Vec<Arc<Mesh>>,
 }
 
-pub fn col_at_ray(ray: &Ray, lights: &Vec<Arc<Light>>, computed_meshes: &Vec<Arc<ComputedMesh>>) -> Vert {
+pub fn colour_at_ray(ray: &Ray, lights: &Vec<Arc<Light>>, computed_meshes: &Vec<Arc<ComputedMesh>>) -> Vert {
     let mut intersections = vec![];
     for mesh in computed_meshes.into_iter() {
         mesh.intersects_with(&ray, &mut intersections);
@@ -38,7 +38,7 @@ pub fn col_at_ray(ray: &Ray, lights: &Vec<Arc<Light>>, computed_meshes: &Vec<Arc
     }
     match col {
         Some(col) => col,
-        None => Vert::black(),
+        None => Vert::default(),
     }
 }
 

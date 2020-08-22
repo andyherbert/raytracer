@@ -1,4 +1,4 @@
-use crate::{Material, Ray, Triangle, Vert, MACHEPS};
+use crate::{Material, Ray, Triangle, Vert, MACHEPS, UVMap};
 
 pub struct ComputedTriangle {
     p1: Vert,
@@ -7,10 +7,11 @@ pub struct ComputedTriangle {
     e2: Vert,
     pub norm_v: Vert,
     pub material: Material,
+    pub uv_map: Option<UVMap>,
 }
 
 impl ComputedTriangle {
-    pub fn new(p1: Vert, p2: Vert, p3: Vert, normals: Option<(Vert, Vert, Vert)>) -> ComputedTriangle {
+    pub fn new(p1: Vert, p2: Vert, p3: Vert, normals: Option<(Vert, Vert, Vert)>, material: Material, uv_map: Option<UVMap>) -> ComputedTriangle {
         let e1 = p2.clone() - p1.clone();
         let e2 = p3.clone() - p1.clone();
         let norm_v = e2.cross_product(&e1).normalise();
@@ -20,7 +21,8 @@ impl ComputedTriangle {
             e1,
             e2,
             norm_v,
-            material: Material::default(),
+            material,
+            uv_map,
         }
     }
 
@@ -49,15 +51,21 @@ impl ComputedTriangle {
     }
 
     pub fn norm_vec_at_uv(&self, u: f64, v: f64) -> Vert {
-        if let Some((n1, n2, n3)) = &self.normals {
-            n2.multiply_by_scalar(u) + n3.multiply_by_scalar(v) + n1.multiply_by_scalar(1.0 - u - v)
-        } else {
-            self.norm_v.clone()
+        match &self.normals {
+            Some((n1, n2, n3)) => {
+                n2.multiply_by_scalar(u) +
+                n3.multiply_by_scalar(v) +
+                n1.multiply_by_scalar(1.0 - u - v)
+            },
+            None => self.norm_v.clone(),
         }
     }
 
-    pub fn colour_at_uv(&self, _u: f64, _v: f64) -> Vert {
-        self.material.colour.clone()
+    pub fn colour_at_uv(&self, u: f64, v: f64) -> Vert {
+        match &self.uv_map {
+            Some(uv_map) => uv_map.colour_at(u, v),
+            None => self.material.colour.clone(),
+        }
     }
 }
 

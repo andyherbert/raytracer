@@ -1,4 +1,4 @@
-#[derive(Clone)]
+#[derive(Debug, Default, Clone)]
 pub struct Vert {
     pub x: f64,
     pub y: f64,
@@ -15,14 +15,6 @@ impl Vert {
             x: r as f64 / 255.0,
             y: g as f64 / 255.0,
             z: b as f64 / 255.0,
-        }
-    }
-
-    pub fn black() -> Vert {
-        Vert {
-            x: 0.0,
-            y: 0.0,
-            z: 0.0,
         }
     }
 

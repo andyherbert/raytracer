@@ -28,7 +28,7 @@ pub trait SortByTime {
 
 impl SortByTime for Vec<Intersection<'_>> {
     fn sort_by_time(&mut self) {
-        self.sort_by(|a, b| a.time.partial_cmp(&b.time).unwrap())
+        self.sort_by(|a, b| a.time.partial_cmp(&b.time).expect("time cmp"))
     }
 }
 

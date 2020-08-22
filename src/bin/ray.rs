@@ -1,5 +1,5 @@
-use raytracer::spinning_plane;
+use raytracer::spinning_gitaroo;
 
 fn main() {
-    spinning_plane();
+    spinning_gitaroo();
 }
